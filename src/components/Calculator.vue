@@ -135,50 +135,122 @@
 
 
 <script>
+
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'HelloWorld',
-  data () {
-    return {
-      pts: 0,
-      reb: 0,
-      ast: 0,
-      stl: 0,
-      blk: 0,
-      fgm: 1,
-      tpm: 0,
-      ftm: 0,
-      tov: 0,
-      fga: 2,
-      tpa: 0,
-      fta: 0
-    }
-  },
+
   computed: {
-    missedFieldGoal () {
-      return this.fga - this.fgm
-    },
-    missedThreePoints () {
-      return this.tpa - this.tpm
-    },
-    missedFreeThrow () {
-      return this.fta - this.ftm
-    },
     score () {
       const { pts, reb, ast, stl, blk, fgm, tpm, ftm, tov, missedFieldGoal, missedThreePoints, missedFreeThrow } = this
 
       return pts + reb + ast + stl + blk + fgm + tpm + ftm - tov - missedFieldGoal - missedThreePoints - missedFreeThrow
-    }
-  },
-  watch: {
-    fgm: function (value) {
-      this.fga = this.maxAttempt(value, this.fga)
     },
-    tpm: function (value) {
-      this.tpa = this.maxAttempt(value, this.tpa)
+    pts: {
+      get () {
+        return this.$store.state.boxscore.pts
+      },
+      set (value) {
+        this.$store.commit('updatePts', value)
+      }
     },
-    ftm: function (value) {
-      this.fta = this.maxAttempt(value, this.fta)
-    }
+    reb: {
+      get () {
+        return this.$store.state.boxscore.reb
+      },
+      set (value) {
+        this.$store.commit('updateReb', value)
+      }
+    },
+    ast: {
+      get () {
+        return this.$store.state.boxscore.ast
+      },
+      set (value) {
+        this.$store.commit('updateAst', value)
+      }
+    },
+    stl: {
+      get () {
+        return this.$store.state.boxscore.stl
+      },
+      set (value) {
+        this.$store.commit('updateStl', value)
+      }
+    },
+    blk: {
+      get () {
+        return this.$store.state.boxscore.blk
+      },
+      set (value) {
+        this.$store.commit('updateBlk', value)
+      }
+    },
+    fgm: {
+      get () {
+        return this.$store.state.boxscore.fgm
+      },
+      set (value) {
+        this.$store.commit('updateFgm', value)
+        this.$store.commit('updateFga', this.maxAttempt(value, this.fga))
+      }
+    },
+    tpm: {
+      get () {
+        return this.$store.state.boxscore.tpm
+      },
+      set (value) {
+        this.$store.commit('updateTpm', value)
+        this.$store.commit('updateTpa', this.maxAttempt(value, this.tpa))
+      }
+    },
+    ftm: {
+      get () {
+        return this.$store.state.boxscore.ftm
+      },
+      set (value) {
+        this.$store.commit('updateFtm', value)
+        this.$store.commit('updateFta', this.maxAttempt(value, this.fta))
+      }
+    },
+    tov: {
+      get () {
+        return this.$store.state.boxscore.tov
+      },
+      set (value) {
+        this.$store.commit('updateTov', value)
+      }
+    },
+    fga: {
+      get () {
+        return this.$store.state.boxscore.fga
+      },
+      set (value) {
+        this.$store.commit('updateFga', value)
+      }
+    },
+    tpa: {
+      get () {
+        return this.$store.state.boxscore.tpa
+      },
+      set (value) {
+        this.$store.commit('updateTpa', value)
+      }
+    },
+    fta: {
+      get () {
+        return this.$store.state.boxscore.fta
+      },
+      set (value) {
+        this.$store.commit('updateFta', value)
+      }
+    },
+    ...mapGetters([
+      'missedFieldGoal',
+      'missedThreePoints',
+      'missedFreeThrow'
+    ])
   },
   methods: {
     maxAttempt (value, prop) {
